@@ -16,7 +16,7 @@ interface ConverterInterface {
 }
 
 class Converter implements ConverterInterface{
-    private static final String API_KEY = "b8b765a8153928e75a8e17f1";
+    private static final String API_KEY = "API_KEY";
     private static final String BASE_URL = "https://v6.exchangerate-api.com/v6/";
 
     // Map to store common currencies with their descriptions
