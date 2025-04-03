@@ -9,8 +9,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-public class CurrencyConverter {
-    private static final String API_KEY = "API_KEY";
+interface ConverterInterface {
+    double convertCurrency(String from, String to, double amount) throws Exception;
+    void performConversion(Scanner scanner);
+    void showAvailableCurrencies();
+}
+
+class Converter implements ConverterInterface{
+    private static final String API_KEY = "b8b765a8153928e75a8e17f1";
     private static final String BASE_URL = "https://v6.exchangerate-api.com/v6/";
 
     // Map to store common currencies with their descriptions
@@ -34,43 +40,7 @@ public class CurrencyConverter {
         COMMON_CURRENCIES.put("KRW", "South Korean Won");
     }
 
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
-        while (true) {
-            try {
-                // Display main menu
-                System.out.println("\nCurrency Converter");
-                System.out.println("1. Show Available Currencies");
-                System.out.println("2. Convert Currency");
-                System.out.println("3. Exit");
-                System.out.print("Choose an option: ");
-
-                int choice = scanner.nextInt();
-
-                switch (choice) {
-                    case 1:
-                        showAvailableCurrencies();
-                        break;
-                    case 2:
-                        performConversion(scanner);
-                        break;
-                    case 3:
-                        System.out.println("Thank you for using Currency Converter!");
-                        scanner.close();
-                        return;
-                    default:
-                        System.out.println("Invalid option. Please try again.");
-                }
-
-            } catch (Exception e) {
-                System.out.println("Error: " + e.getMessage());
-                scanner.nextLine(); // Clear scanner buffer
-            }
-        }
-    }
-
-    private static void showAvailableCurrencies() {
+    public void showAvailableCurrencies() {
         System.out.println("\nAvailable Currencies:");
         System.out.println("--------------------");
         for (Map.Entry<String, String> entry : COMMON_CURRENCIES.entrySet()) {
@@ -78,7 +48,7 @@ public class CurrencyConverter {
         }
     }
 
-    private static void performConversion(Scanner scanner) {
+    public void performConversion(Scanner scanner) {
         try {
             showAvailableCurrencies();
 
@@ -103,15 +73,15 @@ public class CurrencyConverter {
             double result = convertCurrency(baseCurrency, targetCurrency, amount);
 
             // Display result
-            System.out.printf("%n%.2f %s = %.2f %s%n",
-                    amount, baseCurrency, result, targetCurrency);
+            System.out.printf("%n-------------------------%n%.2f %s = %.2f %s%n-------------------------%n",
+            amount, baseCurrency, result, targetCurrency);
 
         } catch (Exception e) {
             System.out.println("Error during conversion: " + e.getMessage());
         }
     }
 
-    private static double convertCurrency(String from, String to, double amount) throws Exception {
+    public double convertCurrency(String from, String to, double amount) throws Exception {
         // Build API URL
         String urlString = BASE_URL + API_KEY + "/pair/" + from + "/" + to;
 
